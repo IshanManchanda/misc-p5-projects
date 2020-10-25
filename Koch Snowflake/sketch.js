@@ -1,50 +1,40 @@
-let lines = [];
-let count = 0;
+let p1, p2, p3;
+let old_lines = [], lines = [];
+let iteration = 0;
 
 
 class Kline {
 	constructor(a, b) {
 		this.start = a;
 		this.end = b;
+
+		this.step = p5.Vector.sub(this.end, this.start);
+		this.step.div(3);
 	}
 
 	draw()  {
-		strokeWeight(2);
 		line(this.start.x, this.start.y, this.end.x, this.end.y);
 	};
 
-	KA() {
+	point_a() {
 		return this.start.copy();
 	};
 
-	KB() {
-		let v = p5.Vector.sub(this.end, this.start);
-		v.div(3);
-		v.add(this.start);
-		return v;
+	point_b() {
+		return p5.Vector.add(this.start, this.step);
 	};
 
-	KC() {
-		let a = this.start.copy();
-
-		let v = p5.Vector.sub(this.end, this.start);
-		v.div(3);
-		a.add(v);
-
+	point_c() {
+		let v = this.step.copy();
 		v.rotate(-60);
-		a.add(v);
-
-		return a;
+		return p5.Vector.add(this.point_b(), v);
 	};
 
-	KD() {
-		let v = p5.Vector.sub(this.end, this.start);
-		v.mult(2 / 3);
-		v.add(this.start);
-		return v;
+	point_d() {
+		return p5.Vector.sub(this.end, this.step);
 	};
 
-	KE() {
+	point_e() {
 		return this.end.copy();
 	};
 
@@ -54,12 +44,12 @@ class Kline {
 function gen(lines) {
 	let next = [];
 
-	for (let i = 0; i < lines.length; i++) {
-		const a = lines[i].KA();
-		const b = lines[i].KB();
-		const c = lines[i].KC();
-		const d = lines[i].KD();
-		const e = lines[i].KE();
+	for (let i = 0; i < lines.length; ++i) {
+		const a = lines[i].point_a();
+		const b = lines[i].point_b();
+		const c = lines[i].point_c();
+		const d = lines[i].point_d();
+		const e = lines[i].point_e();
 
 		next.push(new Kline(a,b));
 		next.push(new Kline(b,c));
@@ -70,39 +60,43 @@ function gen(lines) {
 }
 
 
-// noinspection JSUnusedGlobalSymbols
 function setup() {
 	createCanvas(1200, 600);
 	angleMode(DEGREES);
-	let start1 = createVector(400, 200);
-	let end1 = createVector(800, 200);
-	let s3 = createVector(600, 480);
+	strokeWeight(2);
 
-	lines.push(new Kline(start1, end1));
-	lines.push(new Kline(s3, start1));
-	lines.push(new Kline(end1, s3));
+	p1 = createVector(400, 200);
+	p2 = createVector(800, 200);
+	p3 = createVector(600, 480);
+
+	lines = [new Kline(p1, p2), new Kline(p2, p3), new Kline(p3, p1)];
 }
 
 
 function draw() {
 	background(255, 255, 255);
-	for (let i = 0; i < lines.length; i++) {
+
+	stroke(0, 255, 0);
+	for (let i = 0; i < old_lines.length; ++i) {
+		old_lines[i].draw();
+	}
+
+	stroke(0, 0, 0);
+	for (let i = 0; i < lines.length; ++i) {
 		lines[i].draw();
 	}
 }
 
 
 function mouseClicked() {
-	count++;
-	if (count < 7) {
+	iteration++;
+	if (iteration < 7) {
+		old_lines = lines;
 		lines = gen(lines);
 	}
 	else {
-		let start1 = createVector(400, 200);
-		let end1 = createVector(800, 200);
-		let s3 = createVector(600, 480);
-
-		lines = [new Kline(start1, end1), new Kline(s3, start1), new Kline(end1, s3)];
-		count = 0;
+		old_lines = [];
+		lines = [new Kline(p1, p2), new Kline(p2, p3), new Kline(p3, p1)];
+		iteration = 0;
 	}
 }

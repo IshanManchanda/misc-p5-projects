@@ -1,6 +1,6 @@
-
+// TODO: Convert
 /*
-Drag Mouse At A Speed Slower Than 30Pixels Per Second To Burn Leaves.
+Drag Mouse At A Speed Slower Than 30 Pixels Per Second To Burn Leaves.
 P.s. Don't Burn Too Much Or Too Fast Or Else System Will Lag And Global Warming Will Speed Up.
 */
 

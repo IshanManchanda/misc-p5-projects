@@ -1,3 +1,5 @@
+// TODO: Convert
+
 angleMode = "radians";
 
 const Wave = function (amplitude, period, color) {
