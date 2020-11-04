@@ -1,6 +1,6 @@
 // TODO: Fix issues
-const height = 600;
-const width = 1200;
+const height = 600, width = 1200;
+let systems = [];
 
 
 class Particle {
@@ -46,7 +46,6 @@ class ParticleSystem {
 	run() {
 		for (let i = this.particles.length - 1; i > -1; --i) {
 			this.particles[i].update();
-			console.log(i, this.particles[i].velocity, this.particles[i].life)
 
 			if (this.particles[i].isDead()) {
 				this.particles.splice(i, 1);
@@ -58,21 +57,17 @@ class ParticleSystem {
 }
 
 
-// We start off with an empty systems array
-let systems = [];
-//systems.push(new ParticleSystem(new PVector(40,40)));
-
-// TODO: Add leaves
-// We fill up the leaves array with positions
-// var leaves = [];
-// for (var i = 0; i < 100; i++) {
-// 	leaves.push(new PVector(random(0, width), random(0, height)));
-// }
-
 function setup() {
 	createCanvas(width, height);
 	angleMode(RADIANS);
-	frameRate(2400);
+	frameRate(240);
+
+	// TODO: Add leaves
+	// We fill up the leaves array with positions
+	// var leaves = [];
+	// for (let i = 0; i < 100; ++i) {
+	// 	leaves.push(new PVector(random(0, width), random(0, height)));
+	// }
 }
 
 function draw() {
@@ -80,7 +75,7 @@ function draw() {
 	// background(66, 57, 11);
 	background(0);
 
-	// for (i = 0; i < leaves.length; i++) {
+	// for (let i = 0; i < leaves.length; ++i) {
 	// 	image(getImage("avatars/leaf-orange"), leaves[i].x, leaves[i].y, 30, 30);
 	// }
 
