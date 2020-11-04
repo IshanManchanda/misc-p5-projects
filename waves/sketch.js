@@ -1,52 +1,51 @@
-// TODO: Convert
+const height = 600, width = 900;
+let waves = [];
 
-angleMode = "radians";
 
-const Wave = function (amplitude, period, color) {
-	this.startAngle = 0;
-	this.amplitude = amplitude;
-	this.period = period;
-	this.color = color;
-	this.angleVel = (TWO_PI / this.period) * 5;
-	//println(this.angleVel);
-};
-
-Wave.prototype.update = function() {
-
-	//println(this.startAngle);
-};
-
-Wave.prototype.draw = function() {
-	this.startAngle += TWO_PI / this.period;
-	let Ang = this.startAngle;
-	//println(sin(Ang));
-	fill(this.color);
-	for (let x = 0; x <= width; x += 24) {
-		const y = this.amplitude * sin(Ang);
-		//println(Ang);
-		ellipse(x,y + height/2,40,40);
-		Ang += this.angleVel;
+class Wave {
+	constructor(amplitude, period, color) {
+		this.startAngle = 0;
+		this.amplitude = amplitude;
+		this.period = period;
+		this.color = color;
+		this.angleVel = (Math.PI / this.period) * 10;
 	}
-};
 
-const wave = new Wave(200, 100, color(0, 255, 30, 100));
-const wave2 = new Wave(200, 125, color(0, 255, 242, 100));
-const wave3 = new Wave(200, 150, color(250, 0, 0, 100));
-const wave4 = new Wave(200, 175, color(222, 16, 215, 100));
-const wave5 = new Wave(200, 200, color(250, 108, 0, 100));
+	draw() {
+		this.startAngle += 2 * Math.PI / this.period;
+		let angle = this.startAngle;
 
-translate(0,0);
+		fill(this.color);
+		for (let x = 0; x <= width; x += 24) {
+			const y = this.amplitude * sin(angle);
+
+			ellipse(x,y + height / 2,40,40);
+			angle += this.angleVel;
+		}
+	}
+}
+
+
+function setup() {
+	createCanvas(width, height);
+	angleMode(RADIANS);
+	frameRate(240);
+
+	translate(0,0);
+
+	waves.push(new Wave(50, 50, color(0, 255, 30, 100)))
+	waves.push(new Wave(100, 125, color(0, 255, 242, 100)));
+	waves.push(new Wave(150, 150, color(250, 0, 0, 100)));
+	waves.push(new Wave(250, 200, color(222, 16, 215, 100)));
+	waves.push(new Wave(300, 250, color(250, 108, 0, 100)));
+
+}
+
 
 draw = function() {
-	//background(255);
-	wave.update();
-	wave2.update();
-	wave3.update();
-	wave4.update();
-	wave5.update();
-	wave.draw();
-	wave2.draw();
-	wave3.draw();
-	wave4.draw();
-	wave5.draw();
+	background(0);
+
+	for (let i = 0; i < waves.length; ++i) {
+		waves[i].draw();
+	}
 };
